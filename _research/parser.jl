@@ -77,4 +77,4 @@ end
 
 @quickactivate "NeuriViz"
 
-fdt_to_arrow(datadir("exp_raw"))
+# fdt_to_arrow(datadir("exp_raw"))
