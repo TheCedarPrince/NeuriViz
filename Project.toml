@@ -1,5 +1,7 @@
 name = "NeuriViz"
 authors = ["Jacob Zelko", "Zachary P Christensen"]
+uuid = "97a54b3a-576c-4b3e-84b7-268c1e2b103a"
+version = "0.0.1"
 
 [deps]
 Animations = "27a7e980-b3e6-11e9-2bcd-0b925532e340"
