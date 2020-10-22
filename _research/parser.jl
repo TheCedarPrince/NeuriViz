@@ -75,6 +75,36 @@ function fdt_to_arrow(file_path)
     end
 end
 
+function move_files(file_path, file_type)
+    subjects = searchdir(file_path, "sub")
+    for sub_num in subjects
+        sessions = readdir(file_path * "/" * sub_num)
+        for ses_num in sessions
+            eeg_sessions = readdir(file_path * "/" * sub_num * "/" * ses_num)
+            for eeg_num in eeg_sessions
+                files = searchdir(
+                    file_path * "/" * sub_num * "/" * ses_num * "/" * eeg_num,
+                    "$file_type",
+                )
+                for file in files
+                    mv_file =
+                        file_path *
+                        "/" *
+                        sub_num *
+                        "/" *
+                        ses_num *
+                        "/" *
+                        eeg_num *
+                        "/" *
+                        file
+                    dest_path = "data/exp_pro/" * sub_num * "/" * ses_num * "/" *  eeg_num * "/" * file
+                    cp(mv_file, dest_path)
+                end
+            end
+        end
+    end
+end
+
 @quickactivate "NeuriViz"
 
 # fdt_to_arrow(datadir("exp_raw"))
