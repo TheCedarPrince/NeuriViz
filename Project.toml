@@ -1,16 +1,15 @@
 name = "NeuriViz"
-authors = ["Jacob Zelko", "Zachary P Christensen"]
 uuid = "97a54b3a-576c-4b3e-84b7-268c1e2b103a"
+authors = ["Jacob Zelko", "Zachary P Christensen"]
 version = "0.0.1"
 
 [deps]
 Animations = "27a7e980-b3e6-11e9-2bcd-0b925532e340"
 Arrow = "69666777-d1a9-59fb-9406-91d4454c9d45"
-CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+AxisIndices = "f52c9ee2-1b1c-4fd8-8546-6350938c7f11"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 DrWatson = "634d3b9d-ee7a-5ddf-bec9-22491ea816e1"
 Javis = "78b212ba-a7f9-42d4-b726-60726080707e"
-MAT = "23992714-dd62-5051-b70f-ba57cb901cac"
 
 [compat]
 julia = "1.5.0"
