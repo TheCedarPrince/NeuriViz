@@ -1,5 +1,6 @@
 module NeuriViz
 
+using BIDSTools
 
 """
 
@@ -27,6 +28,28 @@ function fdt_parser(path, dims)
 
 end
 
-export fdt_parser
+function get_files(input_directory = "exp_raw", output_directory = "exp_pro")
+    input_files = []
+    output_files = []
+    data_path = input_directory
+    layout = Layout(data_path; load_metadata = false)
+    for sub in layout.subjects
+        for ses in sub.sessions
+            output_path = output_directory * ses.path[(end - 14):end]
+            input_path = data_path * ses.path[(end - 14):end]
+            for file in ses.files
+                input_file = input_path * file.path[(length(input_path) + 1):end]
+                output_file = output_path * file.path[(length(input_path) + 1):end]
+                push!(input_files, input_file)
+                push!(output_files, output_file)
+            end
+        end
+    end
+    return input_files, output_files
+end
+
+filter_files(file_list, file_type) = filter(file_list -> occursin(file_type, file_list), file_list)
+
+export fdt_parser, get_files, filter_files
 
 end
