@@ -1,21 +1,14 @@
-using BIDSTools
 using DrWatson
-
 @quickactivate "NeuriViz"
 
-data_path = datadir("exp_raw")
-layout = Layout(data_path; load_metadata = false)
+using NeuriViz
 
-for sub in layout.subjects
-    for ses in sub.sessions
-        output_path = datadir("exp_pro") * ses.path[(end - 14):end]
-        input_path = data_path * ses.path[(end - 14):end]
-        for file in ses.files
-	    input_file = input_path * file.path[(length(input_path) + 1):end]
-            output_file = output_path * file.path[(length(input_path) + 1):end]
-        end
-    end
-end
+input_files, output_files = get_files(datadir("exp_raw"), datadir("exp_pro"))
 
+fdt_output = filter_files(output_files, ".fdt") |> x -> replace.(x, ".fdt" => ".arrow")
 
+fdt_input = filter_files(input_files, ".fdt")
 
+set_files = filter_files(input_files, ".set")
+
+electrode_files = filter_files(input_files, "electrodes.tsv")
