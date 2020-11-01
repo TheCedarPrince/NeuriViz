@@ -1,10 +1,12 @@
 # NeuriViz
 
-This code base is using the Julia Language and [DrWatson](https://juliadynamics.github.io/DrWatson.jl/stable/)
-to make a reproducible scientific project named
-> NeuriViz
+> An experiment in making multimodal visualization schemes to investigate effective brain connectivity.
 
-It is authored by Jacob Zelko, Zachary P Christensen.
+Authors: Jacob Zelko, Zachary P Christensen
+
+![](assets/neuriviz.png)
+
+This is a Work-in-Progress exploration of making easy visualizations to enable rapid interactivity and feedback with EEG data. 
 
 To (locally) reproduce this project, do the following:
 
