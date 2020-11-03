@@ -20,9 +20,7 @@ fdt_parser(path, mat) =
 searchdir(path, key) = filter(x -> occursin(key, x), readdir(path))
 
 function fdt_to_arrow(file_path)
-
     subjects = searchdir(file_path, "sub")
-
     for sub_num in subjects
         sessions = readdir(file_path * "/" * sub_num)
         for ses_num in sessions
@@ -97,8 +95,18 @@ function move_files(file_path, file_type)
                         eeg_num *
                         "/" *
                         file
-                    dest_path = "data/exp_pro/" * sub_num * "/" * ses_num * "/" *  eeg_num * "/" * file
-                    cp(mv_file, dest_path)
+                    data = DataFrame(CSV.read(mv_file))
+                    data = select!(data, Not([:duration, :sample, :stim_file, :HED]))
+                    Arrow.write(
+                        datadir(
+                            "exp_pro",
+                            "$sub_num",
+                            "$ses_num",
+                            "$eeg_num",
+                            "$(file[1:end - 3])arrow",
+                        ),
+                        data,
+                    )
                 end
             end
         end
