@@ -6,6 +6,7 @@ version = "0.0.1"
 [deps]
 Animations = "27a7e980-b3e6-11e9-2bcd-0b925532e340"
 Arrow = "69666777-d1a9-59fb-9406-91d4454c9d45"
+AxisIndices = "f52c9ee2-1b1c-4fd8-8546-6350938c7f11"
 BIDSTools = "5c32dcf8-0cad-11ea-129f-5f4ce150df4b"
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"

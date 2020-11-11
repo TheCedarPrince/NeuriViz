@@ -18,6 +18,12 @@ git-tree-sha1 = "e81c509d2c8e49592413bfb0bb3b08150056c79d"
 uuid = "27a7e980-b3e6-11e9-2bcd-0b925532e340"
 version = "0.4.1"
 
+[[ArrayInterface]]
+deps = ["LinearAlgebra", "Requires", "SparseArrays"]
+git-tree-sha1 = "bd09109dffaa3926a20178cb8432edd729be0db0"
+uuid = "4fba245c-0d91-5ea0-9b3e-6abc04ee57a9"
+version = "2.13.7"
+
 [[Arrow]]
 deps = ["CodecLz4", "CodecZstd", "DataAPI", "Dates", "Mmap", "PooledArrays", "SentinelArrays", "Tables"]
 git-tree-sha1 = "76641f71ac332cd4d3cf54b98234a0f597bd7a2f"
@@ -41,6 +47,12 @@ deps = ["Dates", "IntervalSets", "IterTools", "RangeArrays"]
 git-tree-sha1 = "f31f50712cbdf40ee8287f0443b57503e34122ef"
 uuid = "39de3d68-74b9-583c-8d2d-e117c070f3a9"
 version = "0.4.3"
+
+[[AxisIndices]]
+deps = ["AbstractFFTs", "ArrayInterface", "ChainedFixes", "Dates", "EllipsisNotation", "IntervalSets", "LinearAlgebra", "MappedArrays", "Metadata", "NamedDims", "SparseArrays", "StaticRanges", "Statistics", "SuiteSparse"]
+git-tree-sha1 = "cc6ced5e8bd34064a4ec17a563fd51adf9f236ab"
+uuid = "f52c9ee2-1b1c-4fd8-8546-6350938c7f11"
+version = "0.7.0"
 
 [[BIDSTools]]
 deps = ["CSV", "DataFrames", "DataStructures", "JSON", "PrettyTables", "Test"]
@@ -104,6 +116,11 @@ deps = ["Compat", "DataAPI", "Future", "JSON", "Missings", "Printf", "Reexport",
 git-tree-sha1 = "23d7324164c89638c18f6d7f90d972fa9c4fa9fb"
 uuid = "324d7699-5711-5eae-9e2f-1d82baa6b597"
 version = "0.7.7"
+
+[[ChainedFixes]]
+git-tree-sha1 = "da67165b492cc89f119e74f626d795e2e88e90f7"
+uuid = "9706b775-b1f4-4c74-b677-0491368ea71c"
+version = "0.2.1"
 
 [[CodecLz4]]
 deps = ["Lz4_jll", "TranscodingStreams"]
@@ -373,10 +390,10 @@ uuid = "f67ccb44-e63f-5c2f-98bd-6dc0ccc4ba2f"
 version = "0.13.6"
 
 [[HDF5_jll]]
-deps = ["Libdl", "Pkg", "Zlib_jll"]
-git-tree-sha1 = "3dbc683172cb53428907485a4bb98a29d3874083"
+deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "Zlib_jll"]
+git-tree-sha1 = "bc9c3d43ffd4d8988bfa372b86d4bdbd26860e95"
 uuid = "0234f1f7-429e-5d53-9886-15a909be8d59"
-version = "1.10.5+6"
+version = "1.10.5+7"
 
 [[HarfBuzz_jll]]
 deps = ["Artifacts", "Cairo_jll", "Fontconfig_jll", "FreeType2_jll", "Gettext_jll", "Glib_jll", "Graphite2_jll", "ICU_jll", "JLLWrappers", "Libdl", "Libffi_jll", "Pkg"]
@@ -688,6 +705,12 @@ git-tree-sha1 = "75a54abd10709c01f1b86b84ec225d26e840ed58"
 uuid = "e89f7d12-3494-54d1-8411-f7d8b9ae1f27"
 version = "0.5.0"
 
+[[Metadata]]
+deps = ["ArrayInterface"]
+git-tree-sha1 = "aeff4c41d08fa7d7fc870798a701a4cc89d748a2"
+uuid = "4fb893c1-3164-4f58-823a-cb4c64eabb4f"
+version = "0.2.1"
+
 [[Missings]]
 deps = ["DataAPI"]
 git-tree-sha1 = "ed61674a0864832495ffe0a7e889c0da76b0f4c8"
@@ -707,6 +730,12 @@ version = "0.2.3"
 git-tree-sha1 = "c84c576296d0e2fbb3fc134d3e09086b3ea617cd"
 uuid = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
 version = "0.3.4"
+
+[[NamedDims]]
+deps = ["LinearAlgebra", "Pkg", "Requires", "Statistics"]
+git-tree-sha1 = "ec71dd922fd8008f29741b1358da9254833ef6ca"
+uuid = "356022a1-0364-5f58-8944-0da4b18d706f"
+version = "0.2.29"
 
 [[OffsetArrays]]
 git-tree-sha1 = "a416e2f267e2c8729f25bcaf1ce19d2893faf393"
@@ -909,6 +938,12 @@ git-tree-sha1 = "016d1e1a00fabc556473b07161da3d39726ded35"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
 version = "0.12.4"
 
+[[StaticRanges]]
+deps = ["ArrayInterface", "ChainedFixes", "Dates", "IntervalSets", "LinearAlgebra", "Reexport", "Requires", "SparseArrays"]
+git-tree-sha1 = "85ec90bb42057cedb8f43ce40af2799961665bce"
+uuid = "d8176aec-3168-11e9-3c98-e3954798be3a"
+version = "0.8.3"
+
 [[Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
 uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
@@ -918,6 +953,10 @@ deps = ["DataAPI", "DataStructures", "LinearAlgebra", "Missings", "Printf", "Ran
 git-tree-sha1 = "7bab7d4eb46b225b35179632852b595a3162cb61"
 uuid = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
 version = "0.33.2"
+
+[[SuiteSparse]]
+deps = ["Libdl", "LinearAlgebra", "Serialization", "SparseArrays"]
+uuid = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
 
 [[TableTraits]]
 deps = ["IteratorInterfaceExtensions"]
@@ -1201,6 +1240,6 @@ version = "3.0.0+3"
 
 [[xkbcommon_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg", "Wayland_jll", "Wayland_protocols_jll", "Xorg_libxcb_jll", "Xorg_xkeyboard_config_jll"]
-git-tree-sha1 = "6318781a678a53ae948bc0be82ccabfc66616519"
+git-tree-sha1 = "ece2350174195bb31de1a63bea3a41ae1aa593b6"
 uuid = "d8fb68d0-12a3-5cfd-a85a-d49703b185fd"
-version = "0.9.1+4"
+version = "0.9.1+5"
