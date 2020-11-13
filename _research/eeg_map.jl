@@ -5,7 +5,7 @@ using Luxor
 using ColorTypes: ARGB32
 
 function drawimagematrix(m)
-    d = Drawing(500, 500, "/home/src/Projects/experiments/test.png")
+    d = Drawing(500, 500, "test.png")
     origin()
     circle(O, 170, :clip)
     w, h = size(m)
