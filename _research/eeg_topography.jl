@@ -4,7 +4,7 @@ using DrWatson
 using Arrow
 using AxisIndices
 using DataFrames
-# using Javis
+using Javis
 using NeuriViz
 
 struct Electrode
@@ -12,54 +12,6 @@ struct Electrode
     position::Array
     data::SubArray
 end
-
-# electrode_locations = [
-    # O,
-    # Point(-70, 0),
-    # Point(70, 0),
-    # Point(-140, 0),
-    # Point(140, 0),
-    # Point(0, 70),
-    # Point(-50, 70),
-    # Point(50, 70),
-    # Point(0, -70),
-    # Point(-50, -70),
-    # Point(50, -70),
-    # Point(115, -80),
-    # Point(-115, -80),
-    # Point(115, 80),
-    # Point(-115, 80),
-    # Point(40, -135),
-    # Point(-40, -135),
-    # Point(-190, -10),
-    # Point(190, -10),
-    # Point(-40, 135),
-    # Point(40, 135),
-# ]
-
-# electrode_names = [
-    # "Cz",
-    # "C3",
-    # "C4",
-    # "T3",
-    # "T4",
-    # "Pz",
-    # "P3",
-    # "P4",
-    # "Fz",
-    # "F3",
-    # "F4",
-    # "F8",
-    # "F7",
-    # "T6",
-    # "T5",
-    # "Fp2",
-    # "Fp1",
-    # "A1",
-    # "A2",
-    # "O1",
-    # "O2",
-# ]
 
 function load_eeg_data()
     eeg_data =
@@ -80,9 +32,9 @@ function load_eeg_data()
         [NamedAxisArray(
             [NamedAxisArray(
                 [
-                    DataFrame(eeg_data, copycols=false),
-                    DataFrame(electrodes_data, copycols=false),
-                    DataFrame(event_data, copycols=false),
+                    DataFrame(eeg_data, copycols = false),
+                    DataFrame(electrodes_data, copycols = false),
+                    DataFrame(event_data, copycols = false),
                     nosedir,
                     times,
                     sampling_freq,
@@ -109,15 +61,14 @@ electrode_array = [
     Electrode(
         subject_data[subject = 1][session = 1][information = :electrodes][row, :].name,
         [
-            subject_data[subject = 1][session = 1][information = :electrodes][row, :].x,
-            subject_data[subject = 1][session = 1][information = :electrodes][row, :].y,
+            subject_data[subject = 1][session = 1][information = :electrodes][row, :].x, 
+            subject_data[subject = 1][session = 1][information = :electrodes][row, :].y, 
+            subject_data[subject = 1][session = 1][information = :electrodes][row, :].z 
         ],
         @view subject_data[subject = 1][session = 1][information = :data][row]
     )
     for
     row = 1:size(subject_data[subject = 1][session = 1][information = :electrodes])[1]
 ]
-
-
 
 
