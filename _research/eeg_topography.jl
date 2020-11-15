@@ -4,7 +4,6 @@ using DrWatson
 using Arrow
 using AxisIndices
 using DataFrames
-using Javis
 using NeuriViz
 
 struct Electrode
@@ -70,5 +69,3 @@ electrode_array = [
     for
     row = 1:size(subject_data[subject = 1][session = 1][information = :electrodes])[1]
 ]
-
-
