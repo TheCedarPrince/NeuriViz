@@ -50,22 +50,10 @@ function load_eeg_data()
             session = [1],
         )],
         subject = [1],
-    )
+    );
     return subject_data
 end
 
-subject_data = load_eeg_data()
+Base.copy(e::Electrode) = Electrode(e.label, Array{Float64, 1}(undef, 3), e.data)
 
-electrode_array = [
-    Electrode(
-        subject_data[subject = 1][session = 1][information = :electrodes][row, :].name,
-        [
-            subject_data[subject = 1][session = 1][information = :electrodes][row, :].x, 
-            subject_data[subject = 1][session = 1][information = :electrodes][row, :].y, 
-            subject_data[subject = 1][session = 1][information = :electrodes][row, :].z 
-        ],
-        @view subject_data[subject = 1][session = 1][information = :data][row]
-    )
-    for
-    row = 1:size(subject_data[subject = 1][session = 1][information = :electrodes])[1]
-]
+export load_eeg_data 
