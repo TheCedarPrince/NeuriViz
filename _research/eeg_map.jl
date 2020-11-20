@@ -5,9 +5,9 @@ using Luxor
 using ColorTypes: ARGB32
 
 function drawimagematrix(m)
-    d = Drawing(500, 500, "test.png")
+    d = Drawing(500, 500, "test.png");
     origin()
-    circle(O, 170, :clip)
+    circle(O, 231.95876288659792, :clip)
     w, h = size(m)
     t = Tiler(500, 500, w, h)
     mi = convertmatrixtocolors(m)
@@ -17,60 +17,9 @@ function drawimagematrix(m)
         box(pos, t.tilewidth + 1, t.tileheight + 1, :fill)
     end
     sethue("black")
-    setline(1)
+    Luxor.setline(1)
     clipreset()
-    circle(O, 170, :stroke)
-    setline(2)
-    radius = 15
-    electrode_locations = [
-        O,
-        Point(-70, 0),
-        Point(70, 0),
-        Point(-140, 0),
-        Point(140, 0),
-        Point(0, 70),
-        Point(-50, 70),
-        Point(50, 70),
-        Point(0, -70),
-        Point(-50, -70),
-        Point(50, -70),
-        Point(115, -80),
-        Point(-115, -80),
-        Point(115, 80),
-        Point(-115, 80),
-        Point(40, -135),
-        Point(-40, -135),
-        Point(-190, -10),
-        Point(190, -10),
-        Point(-40, 135),
-        Point(40, 135),
-    ]
-
-    electrode_names = [
-        "Cz",
-        "C3",
-        "C4",
-        "T3",
-        "T4",
-        "Pz",
-        "P3",
-        "P4",
-        "Fz",
-        "F3",
-        "F4",
-        "F8",
-        "F7",
-        "T6",
-        "T5",
-        "Fp2",
-        "Fp1",
-        "A1",
-        "A2",
-        "O1",
-        "O2",
-    ]
-    electrode.(electrode_locations, "white", "black", :fill, radius, electrode_names)
-
+    circle(O, 231.95876288659792, :stroke)
     finish()
     return d
 end
@@ -91,7 +40,7 @@ function electrode(
     circle(p, radius, :fill)
     sethue(outline_color)
     circle(p, radius, :stroke)
-    text(circ_text, p, valign = :middle, halign = :center)
+    Luxor.text(circ_text, p, valign = :middle, halign = :center)
 end
 
 
