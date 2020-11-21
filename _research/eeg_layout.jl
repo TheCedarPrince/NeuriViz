@@ -46,7 +46,6 @@ function eeg_array(
 
     disp_ratio = head_r / xᵢ
     head_r = head_r * abs(head_r / correction)
-    println(head_r)
 
     xₙ, yₙ = inscribed_electrode.position .* disp_ratio
     inscribed_r = √(xₙ^2 + yₙ^2)
@@ -139,4 +138,6 @@ electrode_array = [
 shifted_electrodes =
     eeg_array(demo, electrode_array, electrode_array[27], electrode_array[13], 50, false)
     
-hmap = topoplot(video, shifted_electrodes)
+Javis.render(demo, pathname = "test.gif", tempdirectory = "assets/renders/")
+    
+hmap = topoplot(demo, shifted_electrodes)
