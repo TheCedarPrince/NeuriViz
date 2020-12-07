@@ -34,7 +34,7 @@ function eeg_array(
     video,
     electrodes,
     index_electrode,
-    inscribed_electrode,
+    nosedir,
     buffer = 50,
     inplace = false,
 )
@@ -47,11 +47,7 @@ function eeg_array(
     disp_ratio = head_r / xᵢ
     head_r = head_r * abs(head_r / correction)
 
-    xₙ, yₙ = inscribed_electrode.position .* disp_ratio
-    inscribed_r = √(xₙ^2 + yₙ^2)
-
     head_outline = Object(1:frames, (args...) -> circle(O, head_r, :stroke))
-    inscribed_outline = Object(1:frames, (args...) -> circle(O, inscribed_r, :stroke))
 
     if inplace == false
         electrode_list = []
@@ -59,9 +55,14 @@ function eeg_array(
 
     for electrode in electrodes
         x, y, z = electrode.position .|> arr -> arr .* disp_ratio
+        if nosedir == "+X"
+            p = Point(y, x)
+        else
+            p = Point(x, y)
+        end
         Object(
             1:frames,
-            (args...) -> channel(Point(y, x), "white", "black", :fill, 10, electrode.label),
+            (args...) -> channel(p, "white", "black", :fill, 10, electrode.label),
         )
         if inplace == true
             eletrode.position = [x, y, z]
@@ -78,7 +79,7 @@ function eeg_array(
 
 end
 
-function topoplot(video, electrodes)
+function topoplot_heatmap(video, interpolation_type, electrodes, nosedir)
 
     pos_x = []
     pos_y = []
@@ -102,24 +103,32 @@ function topoplot(video, electrodes)
 
     points = hcat(pos_x, pos_y)'
 
-    interpolator = interpolate(Multiquadratic(), points, samples)
+    interpolator = interpolate(interpolation_type, points, samples)
 
     grid = []
     for x = 1:(video.width)
         for y = 1:(video.height)
-            evaluate(interpolator, [y, x]) |> value -> push!(grid, value)
+            evaluate(interpolator, [x, y]) |> value -> push!(grid, value)
         end
     end
 
     grid = reduce(hcat, grid) |> values -> reshape(values, video.width, video.height)
 
-    return grid
+    if nosedir == "+X"
+        return rotl90(grid)
+    else
+        return grid
+    end
 
 end
 
 include("eeg_topography.jl");
 
-subject_data = load_eeg_data();
+eeg_data_path = "/home/src/Projects/neuriviz/data/exp_pro/sub-002/ses-01/eeg/sub-002_ses-01_task-gonogo_run-01_eeg.arrow"
+electrodes_data_path = "/home/src/Projects/neuriviz/data/exp_pro/sub-002/ses-01/eeg/sub-002_ses-01_task-gonogo_run-01_electrodes.arrow"
+event_data_path = "/home/src/Projects/neuriviz/data/exp_pro/sub-002/ses-01/eeg/sub-002_ses-01_task-gonogo_run-01_events.arrow"
+
+subject_data = load_eeg_data(eeg_data_path, electrodes_data_path, event_data_path);
 
 electrode_array = [
     Electrode(
@@ -135,9 +144,20 @@ electrode_array = [
     row = 1:size(subject_data[subject = 1][session = 1][information = :electrodes])[1]
 ];
 
-shifted_electrodes =
-    eeg_array(demo, electrode_array, electrode_array[27], electrode_array[13], 50, false)
-    
+shifted_electrodes = eeg_array(
+    demo,
+    electrode_array,
+    electrode_array[27],
+    subject_data[subject = 1][session = 1][information = :nosedir],
+    50,
+    false,
+)
+
 Javis.render(demo, pathname = "test.gif", tempdirectory = "assets/renders/")
-    
-hmap = topoplot(demo, shifted_electrodes)
+
+hmap = topoplot_heatmap(
+    demo,
+    Multiquadratic(),
+    shifted_electrodes,
+    subject_data[subject = 1][session = 1][information = :nosedir],
+)
