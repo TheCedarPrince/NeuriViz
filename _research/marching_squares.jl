@@ -1,3 +1,15 @@
+#=
+
+Copyright 2020 Jacob Zelko (aka TheCedarPrince)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+=#
+
 using Luxor
 
 function make_drawing(width, height, img_path, bkg_color, origin_p)
@@ -46,7 +58,7 @@ function create_grid(drawing, nrows, ncols)
             cvalue = rand([0, 1])
             cvalue == 0 ? sethue("white") : sethue("black")
             pos = Point(step_x * (i - 1), step_y * (j - 1))
-            circle(pos, 7.5 * circ_scale, :fill)
+            circle(pos, 6 * circ_scale, :fill)
             points[j, i] = (x = pos.x, y = pos.y, val = cvalue)
         end
     end
@@ -68,35 +80,35 @@ function marching_squares(points)
             south = Point((b.x + a.x) / 2, c.y)
             west = Point(a.x, (a.y + d.y) / 2)
 
-	    circle(north, 2, :fill)
-	    circle(east, 2, :fill)
-	    circle(south, 2, :fill)
-	    circle(west, 2, :fill)
+            # circle(north, 2, :fill)
+            # circle(east, 2, :fill)
+            # circle(south, 2, :fill)
+            # circle(west, 2, :fill)
 
             case = iso_value(a.val, b.val, c.val, d.val)
 
-	    fontsize(14)
-	    textcentered(string(case), Point((a.x + c.x) / 2, (a.y + c.y) / 2))
+            # fontsize(14)
+            # textcentered(string(case), Point((a.x + c.x) / 2, (a.y + c.y) / 2))
 
-	    iso_line(case, north, east, south, west)
+            iso_line(case, north, east, south, west)
         end
     end
 end
 
-width = 500
-height = 500
+width = 1200
+height = 800
 
-nrows = 10
-ncols = 10
+nrows = 25
+ncols = 25
 
 my_draw = make_drawing(
     width,
     height,
-    "/home/src/Projects/neuriviz/assets/squares.png",
+    "/home/src/Knowledgebase/Writings/thecedarprince.github.io/assets/squares_banner.png",
     "gray",
     Point(0, 0),
 )
 grid = create_grid(my_draw, nrows, ncols)
 
 marching_squares(grid)
-finish()
+finish();
