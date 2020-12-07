@@ -12,13 +12,10 @@ struct Electrode
     data::SubArray
 end
 
-function load_eeg_data()
-    eeg_data =
-        Arrow.Table("/home/src/Projects/neuriviz/data/exp_pro/sub-002/ses-01/eeg/sub-002_ses-01_task-gonogo_run-01_eeg.arrow")
-    electrodes_data =
-        Arrow.Table("data/exp_pro/sub-002/ses-01/eeg/sub-002_ses-01_task-gonogo_run-01_electrodes.arrow")
-    event_data =
-        Arrow.Table("data/exp_pro/sub-002/ses-01/eeg/sub-002_ses-01_task-gonogo_run-01_events.arrow")
+function load_eeg_data(eeg_path, electrodes_path, event_path)
+    eeg_data = Arrow.Table(eeg_path)
+    electrodes_data = Arrow.Table(electrodes_path)
+    event_data = Arrow.Table(event_path)
 
     # Based on sampling frequency, it can be assumed that each time represents 1 ms
     times = 1:length(eeg_data[1])
