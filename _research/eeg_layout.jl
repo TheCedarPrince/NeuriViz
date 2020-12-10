@@ -1,18 +1,15 @@
 using DrWatson
 @quickactivate
 
+using BenchmarkTools
+using ColorSchemes
 using Javis
 using NeuriViz
 using ScatteredInterpolation
 
 function ground(args...)
-    background("white")
-    sethue("black")
+    background("black")
 end
-
-demo = Video(500, 500)
-frames = 1
-Background(1:frames, ground)
 
 function channel(
     p = O,
@@ -29,61 +26,64 @@ function channel(
     text(circ_text, p, valign = :middle, halign = :center)
 end
 
+function tilemap(video, grid, radius, frame)
+    circle(O, radius, :clip)
+    rows, columns = size(grid)
+    t = Tiler(video.width, video.height, rows, columns)
 
-function eeg_array(
-    video,
-    electrodes,
-    index_electrode,
-    nosedir,
-    buffer = 50,
-    inplace = false,
-)
-    xᵢ, yᵢ, zᵢ = index_electrode.position
-    frames = 1
-
-    head_r = video.height / 2 - buffer / 2
-    correction = head_r * xᵢ
-
-    disp_ratio = head_r / xᵢ
-    head_r = head_r * abs(head_r / correction)
-
-    head_outline = Object(1:frames, (args...) -> circle(O, head_r, :stroke))
-
-    if inplace == false
-        electrode_list = []
+    for (pos, n) in t
+        value = grid[t.currentrow, t.currentcol]
+        setcolor(ColorSchemes.get(ColorSchemes.colorschemes[:gist_yarg], value))
+        box(pos, t.tilewidth + 1, t.tileheight + 1, :fill)
     end
 
+    sethue("black")
+    Luxor.setline(2)
+    clipreset()
+    circle(O, radius, :stroke)
+end
+
+function eeg_array(video, electrodes, index_electrode, nosedir, buffer, frame_range)
+    xᵢ, yᵢ, zᵢ = index_electrode.position
+    head_r = video.height / 2 - (buffer + 10)
+    disp_ratio = head_r / xᵢ
+
+    shift_electrodes = []
     for electrode in electrodes
         x, y, z = electrode.position .|> arr -> arr .* disp_ratio
-        if nosedir == "+X"
-            p = Point(y, x)
-        else
-            p = Point(x, y)
-        end
-        Object(
-            1:frames,
-            (args...) -> channel(p, "white", "black", :fill, 10, electrode.label),
-        )
-        if inplace == true
-            eletrode.position = [x, y, z]
-        else
-            shift_electrode = copy(electrode)
-            shift_electrode.position[1] = x
-            shift_electrode.position[2] = y
-            shift_electrode.position[3] = z
-            push!(electrode_list, shift_electrode)
-        end
+        shift_electrode = copy(electrode)
+        shift_electrode.position[1] = x
+        shift_electrode.position[2] = y
+        shift_electrode.position[3] = z
+        push!(shift_electrodes, shift_electrode)
     end
 
-    inplace == false && return electrode_list
+    for frame in frame_range
+        Background(frame:frame, ground)
+        topoplot_heatmap(video, Multiquadratic(), shift_electrodes, frame, head_r, nosedir)
+	println(frame)
+        # for electrode in shift_electrodes
+        # x, y, z = electrode.position .|> arr -> arr .* disp_ratio
+        # if nosedir == "+X"
+        # p = Point(y, x)
+        # else
+        # p = Point(x, y)
+        # end
+        # Object(
+        # frame:frame,
+        # (args...) -> channel(p, "white", "black", :fill, 10, electrode.label),
+        # )
+        # end
+    end
 
 end
 
-function topoplot_heatmap(video, interpolation_type, electrodes, nosedir)
+function topoplot_heatmap(video, interpolation_type, electrodes, frame, radius, nosedir)
 
+    samples = Array{Float64}(undef, 0)
+    grid = []
     pos_x = []
     pos_y = []
-    samples = Array{Float64}(undef, 0)
 
     #=
     #
@@ -102,10 +102,8 @@ function topoplot_heatmap(video, interpolation_type, electrodes, nosedir)
     end
 
     points = hcat(pos_x, pos_y)'
-
     interpolator = interpolate(interpolation_type, points, samples)
 
-    grid = []
     for x = 1:(video.width)
         for y = 1:(video.height)
             evaluate(interpolator, [x, y]) |> value -> push!(grid, value)
@@ -115,11 +113,10 @@ function topoplot_heatmap(video, interpolation_type, electrodes, nosedir)
     grid = reduce(hcat, grid) |> values -> reshape(values, video.width, video.height)
 
     if nosedir == "+X"
-        return rotl90(grid)
-    else
-        return grid
+        grid = grid |> transpose
     end
-
+    grid = grid .- minimum(grid) |> x -> x ./ maximum(x)
+    Object(frame:frame, (args...) -> tilemap(video, grid, radius, frame))
 end
 
 include("eeg_topography.jl");
@@ -144,20 +141,25 @@ electrode_array = [
     row = 1:size(subject_data[subject = 1][session = 1][information = :electrodes])[1]
 ];
 
-shifted_electrodes = eeg_array(
+demo = Video(300, 300)
+
+(@btime eeg_array(
     demo,
     electrode_array,
     electrode_array[27],
     subject_data[subject = 1][session = 1][information = :nosedir],
-    50,
-    false,
-)
+    0,
+    1:250:length(electrode_array[1].data),
+)) |> println
 
-Javis.render(demo, pathname = "test.gif", tempdirectory = "assets/renders/")
+# @btime eeg_array(
+    # $demo,
+    # $electrode_array,
+    # $electrode_array[27],
+    # $subject_data[subject = 1][session = 1][information = :nosedir],
+    # 0,
+    # 1:length($electrode_array[1].data),
+# )
 
-hmap = topoplot_heatmap(
-    demo,
-    Multiquadratic(),
-    shifted_electrodes,
-    subject_data[subject = 1][session = 1][information = :nosedir],
-)
+Javis.render(demo, pathname = "test.gif", tempdirectory = "assets/renders/") 
+
