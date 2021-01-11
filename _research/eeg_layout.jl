@@ -1,7 +1,6 @@
 using DrWatson
 @quickactivate
 
-using BenchmarkTools
 using ColorSchemes
 using Javis
 using NeuriViz
@@ -143,23 +142,14 @@ electrode_array = [
 
 demo = Video(300, 300)
 
-(@btime eeg_array(
+eeg_array(
     demo,
     electrode_array,
     electrode_array[27],
     subject_data[subject = 1][session = 1][information = :nosedir],
     0,
     1:250:length(electrode_array[1].data),
-)) |> println
-
-# @btime eeg_array(
-    # $demo,
-    # $electrode_array,
-    # $electrode_array[27],
-    # $subject_data[subject = 1][session = 1][information = :nosedir],
-    # 0,
-    # 1:length($electrode_array[1].data),
-# )
+)
 
 Javis.render(demo, pathname = "test.gif", tempdirectory = "assets/renders/") 
 
